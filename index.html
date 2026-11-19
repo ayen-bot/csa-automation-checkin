@@ -58,24 +58,24 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;p
 <div><label class="q req" for="client">Client / project</label><input type="text" id="client"></div>
 <div><label class="q req" for="tenure">How long have you worked with MAVIS?</label><select id="tenure"><option value="">Select</option><option>Less than 1 month</option><option>1 to 3 months</option><option>3 to 6 months</option><option>6 to 12 months</option><option>Over 1 year</option></select></div></div></div>
 <div class="card"><h2>B. Your confidence</h2><p class="sub">1 = Not confident, 5 = Very confident. Answer honestly. Low scores are useful, not bad.</p>
-<div class="scale"><span>1 Not confident</span><span>5 Very confident</span></div><div id="rates"></div></div>
+<div id="rates"></div></div>
 <div class="card"><h2>C. Where do you struggle most?</h2><p class="sub">Select all that apply (at least one).</p><div class="chk" id="strug"></div>
 <div id="strugOtherW" class="hide"><label class="q req" for="strugOther">Other (tell us)</label><input type="text" id="strugOther"></div></div>
 <div class="card"><h2>D. A recent challenge</h2>
 <label class="q req" for="recent">Describe a recent automation task you struggled with</label><textarea id="recent"></textarea>
 <label class="q req" for="hardest">What part was most challenging?</label><textarea id="hardest"></textarea>
-<div class="grid2"><div><label class="q req" for="time">How long did you spend trying to resolve it?</label><select id="time"><option value="">Select</option><option>Under 30 minutes</option><option>30 to 60 minutes</option><option>1 to 2 hours</option><option>2 to 4 hours</option><option>More than 4 hours</option><option>Over multiple days</option></select></div>
-<div><label class="q req" for="indep">Did you complete it independently?</label><select id="indep"><option value="">Select</option><option>Yes</option><option>Partly (needed some help)</option><option>No</option></select></div></div>
+<div class="grid2"><div><label class="q req" for="time">How long did you spend trying to resolve it?</label><select id="time"><option value="">Select</option><option>Under 30 minutes</option><option>30 to 60 minutes</option><option>1 to 2 hours</option><option>2 to 4 hours</option><option>More than 4 hours</option><option>Over multiple days</option><option>Not applicable</option></select></div>
+<div><label class="q req" for="indep">Did you complete it independently?</label><select id="indep"><option value="">Select</option><option>Yes</option><option>Partly (needed some help)</option><option>No</option><option>Not applicable</option></select></div></div>
 <div id="blkW" class="hide"><label class="q req" for="blocker">What mainly prevented you from finishing alone?</label><select id="blocker"></select>
 <label class="q req" for="blockerNote">Anything to add?</label><textarea id="blockerNote"></textarea></div></div>
 <div class="card"><h2>E. What would help most?</h2><p class="sub">Select all that apply (at least one).</p><div class="chk" id="supp"></div>
 <div id="suppOtherW" class="hide"><label class="q req" for="suppOther">Other (tell us)</label><input type="text" id="suppOther"></div></div>
-<div class="card"><h2>F. Anything else</h2><p class="sub">If nothing applies, write "None".</p>
+<div class="card"><h2>F. Anything else</h2><p class="sub">Think bigger than automation. We want to hear about broader business needs, operational challenges, client expectations, concerns, and ideas for improvement, even if automation is not part of it. This helps us find new ways MAVIS can add value. If nothing applies, write "None".</p>
 
-<label class="q req" for="frus">What takes the most time or causes the most frustration in MAVIS?</label><textarea id="frus"></textarea>
-<label class="q req" for="easier">What would make automation easier for you?</label><textarea id="easier"></textarea>
-<label class="q req" for="tech">Anything you want the Tech Team to improve or provide?</label><textarea id="tech"></textarea>
-<label class="q req" for="other">Other suggestions or concerns</label><textarea id="other"></textarea></div>
+<label class="q req" for="frus">What operational challenges or frustrations slow you or your clients down, whether or not automation is involved?</label><textarea id="frus"></textarea>
+<label class="q req" for="easier">What are clients expecting or asking for that goes beyond what MAVIS does today?</label><textarea id="easier"></textarea>
+<label class="q req" for="tech">Where do you see opportunities for MAVIS to add more value for clients, your work, or the business?</label><textarea id="tech"></textarea>
+<label class="q req" for="other">Any other concerns, needs, or ideas, big or small?</label><textarea id="other"></textarea></div>
 <div id="ferr" class="err"></div>
 <button class="btn" id="sub" type="submit">Submit check-in</button>
 </form></section>
@@ -109,7 +109,7 @@ function progress(){const ids=['name','date','client','tenure','recent','hardest
 $('#f').addEventListener('input',()=>{
  $('#strugOtherW').classList.toggle('hide',!document.querySelector('input[name=strug][value="12"]:checked'));
  $('#suppOtherW').classList.toggle('hide',!document.querySelector('input[name=supp][value="9"]:checked'));
- $('#blkW').classList.toggle('hide',!($('#indep').value&&$('#indep').value!=='Yes'));progress()});
+ $('#blkW').classList.toggle('hide',!($('#indep').value&&!['Yes','Not applicable'].includes($('#indep').value)));progress()});
 const vals=n=>[...document.querySelectorAll(`input[name=${n}]:checked`)].map(e=>+e.value);
 $('#f').addEventListener('submit',async e=>{e.preventDefault();
  const miss=[];if(!$('#name').value.trim())miss.push('your name');if(!$('#date').value)miss.push('the date');if(!$('#tenure').value)miss.push('how long you have used MAVIS');
@@ -118,10 +118,10 @@ $('#f').addEventListener('submit',async e=>{e.preventDefault();
  if(!vals('strug').length)miss.push('at least one area you struggle with');
  if(sel('strug',12)&&!v('strugOther'))miss.push('your "Other" struggle');
  [['recent','your recent challenge'],['hardest','the most challenging part'],['time','time spent'],['indep','whether you finished independently']].forEach(([i,t])=>{if(!v(i))miss.push(t)});
- if($('#indep').value&&$('#indep').value!=='Yes'){if(!v('blocker'))miss.push('what prevented you');if(!v('blockerNote'))miss.push('details on what prevented you')}
+ if($('#indep').value&&!['Yes','Not applicable'].includes($('#indep').value)){if(!v('blocker'))miss.push('what prevented you');if(!v('blockerNote'))miss.push('details on what prevented you')}
  if(!vals('supp').length)miss.push('at least one support option');
  if(sel('supp',9)&&!v('suppOther'))miss.push('your "Other" support need');
- [['frus','your biggest frustration'],['easier','what would make automation easier'],['tech','what the Tech Team could improve'],['other','other suggestions or concerns']].forEach(([i,t])=>{if(!v(i))miss.push(t)});
+ [['frus','your operational challenges or frustrations'],['easier','what clients expect beyond MAVIS today'],['tech','opportunities for MAVIS to add value'],['other','other concerns, needs, or ideas']].forEach(([i,t])=>{if(!v(i))miss.push(t)});
  const conf={};SKILLS.forEach(([k,t])=>{const c=document.querySelector(`input[name=r_${k}]:checked`);if(c)conf[k]=+c.value;else miss.push('a rating for "'+t+'"')});
  if(miss.length){$('#ferr').textContent='Please complete: '+miss.slice(0,4).join(', ')+(miss.length>4?' and '+(miss.length-4)+' more':'')+'.';return}
  $('#ferr').textContent='';
