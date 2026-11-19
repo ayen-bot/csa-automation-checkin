@@ -154,7 +154,7 @@ function render(){
   b.disabled=true;b.textContent='Deleting...';
   try{await remove(id);ALL=ALL.filter(x=>x.id!==id);draw()}catch(e){alert('Could not delete: '+e.message);b.disabled=false;b.textContent='Delete'}});
  $('#tg').onclick=()=>{SHOWTXT=!SHOWTXT;render()};
- if(SHOWTXT)$('#tx').innerHTML=rs.map(r=>{const f=[["Recent struggle",r.recent],["Hardest part",r.hardest],["Blocker note",r.blockerNote],["Frustration",r.frus],["Would make it easier",r.easier],["Tech Team ask",r.tech],["Other",r.other]].filter(x=>x[1]);
+ if(SHOWTXT)$('#tx').innerHTML=rs.map(r=>{const f=[["Recent struggle",r.recent],["Hardest part",r.hardest],["Blocker note",r.blockerNote],["Challenges / frustrations",r.frus],["Client expectations beyond MAVIS",r.easier],["Opportunities for MAVIS",r.tech],["Other concerns / ideas",r.other]].filter(x=>x[1]);
   return f.length?`<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:8px"><b>${esc(r.name)}</b> <span class="tag">${esc(r.date)}</span>${f.map(([a,b])=>`<div style="font-size:14px;margin-top:4px"><span style="color:var(--mut)">${a}:</span> ${esc(b)}</div>`).join('')}</div>`:''}).join('')||'<div class="empty">No written answers.</div>'}
 function sample(){const nm=['Alex','Bri','Cam','Dee','Eli','Fay','Gus','Hal','Ivy','Jo'].map(x=>x+' (sample)');let s=7;const rnd=()=>(s=(s*9301+49297)%233280)/233280;
  return nm.map((name,i)=>{const base=1.5+rnd()*3,conf={};SKILLS.forEach(([k])=>conf[k]=Math.max(1,Math.min(5,Math.round(base+(rnd()-.5)*2))));
