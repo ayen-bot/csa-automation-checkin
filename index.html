@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSA Automation Challenges Check-in</title>
+<style>
+:root{--bg:#f3f6fc;--card:#fff;--ink:#1c2433;--mut:#5d6b82;--line:#e2e7f0;--pri:#155EEF;--pri2:#0f49c2;--sky:#38BDF8;--ok:#1f9d6b;--warn:#d9822b;--bad:#c9444d;--soft:#eaf2ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(120deg,#050816,#0a1833 55%,#08101f);border-bottom:3px solid var(--sky);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h1{font-size:16px;margin:0;font-weight:600;display:flex;align-items:center;gap:10px}header h1 img{width:34px;height:34px}header h1 small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);font-weight:600}header nav button{background:transparent;color:#cfe3fb;border:1px solid #2a3b63;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14px;margin-left:6px}
+header nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+main{max-width:980px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h2{font-size:17px;font-weight:600;margin:0 0 4px}.card .sub{color:var(--mut);font-size:14px;margin:0 0 12px}
+label.q{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}.req:after{content:" *";color:var(--bad)}
+input[type=text],input[type=date],input[type=password],select,textarea{width:100%;padding:10px;border:1px solid #cdd5e3;border-radius:8px;font:inherit;background:#fff}
+textarea{min-height:76px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rate{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.rate:last-child{border:0}.rate .t{font-size:14px}
+.pills{display:flex;gap:4px}.pills input{position:absolute;opacity:0;pointer-events:none}
+.pills label{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid #cdd5e3;border-radius:8px;cursor:pointer;font-weight:600;background:#fff}
+.pills input:checked+label{background:var(--pri);color:#fff;border-color:var(--pri)}
+.pills input:focus-visible+label{outline:2px solid var(--pri2);outline-offset:2px}
+.scale{display:flex;justify-content:space-between;color:var(--mut);font-size:12px;margin-bottom:4px}
+.chk{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px;font-size:14px;cursor:pointer}
+.chk label:has(input:checked){background:var(--soft);border-color:var(--pri)}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:9px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--pri2)}.btn.ghost{background:#fff;color:var(--pri);border:1px solid var(--pri)}.btn:disabled{opacity:.6}
+.prog{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}.prog div{height:6px;background:var(--line);border-radius:4px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+.err{color:var(--bad);font-size:13px;margin-top:4px}.note{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:13px;color:#0f3a96}
+.hide{display:none!important}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:22px;line-height:1.2;margin-top:4px}.stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}.stat small{font-size:12px;color:var(--mut)}
+.filters{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.filters label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bar{display:grid;grid-template-columns:minmax(120px,42%) 1fr 54px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.bar .tr{background:#edf0f6;border-radius:6px;height:14px;overflow:hidden}.bar .fl{height:100%;border-radius:6px}.foot{text-align:center;color:var(--mut);font-size:12px;padding:6px 0 24px;letter-spacing:.04em}.bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mut);font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;background:var(--soft);color:#0f3a96;margin:1px}.tag.w{background:#fdf0e1;color:#8a4d10}.tag.b{background:#fbe6e8;color:#8f2a32}.tag.g{background:#e1f5ec;color:#15694a}
+.rec h3{font-size:14px;margin:14px 0 4px}.rec ul{margin:0;padding-left:18px;font-size:14px}.rec li{margin:3px 0}
+.empty{color:var(--mut);font-size:14px;padding:8px 0}
+.done{text-align:center;padding:40px 18px}.done .ck{width:60px;height:60px;border-radius:50%;background:#e1f5ec;color:var(--ok);font-size:32px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+@media(max-width:760px){.cards,.filters{grid-template-columns:1fr 1fr}.two,.grid2,.chk{grid-template-columns:1fr}.bar{grid-template-columns:1fr 1fr 48px}.bar .l{grid-column:1/3}.bar .tr{grid-column:1/3;grid-row:2}.bar .v{grid-row:1;grid-column:3}}
+</style></head><body>
+<header><h1><img alt="The VA Group" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InR2YWdCbHVlIiB4MT0iNDQiIHkxPSIyOCIgeDI9IjIxNCIgeTI9IjIyNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwQTFBNzIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIwLjQ1IiBzdG9wLWNvbG9yPSIjMjM1MkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzRDQzdGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI1NiIgZmlsbD0iIzA2MTEyNiIvPgogIDxwYXRoIGQ9Ik0xMjYgMjRDMTE4IDU4IDkyIDg0IDI0IDEyNkM5MiAxMTggMTE4IDkyIDEyNiAyNFoiIGZpbGw9InVybCgjdHZhZ0JsdWUpIi8+CiAgPHBhdGggZD0iTTEzMCAyNEMxMzggNTggMTY0IDg0IDIzMiAxMjZDMTY0IDExOCAxMzggOTIgMTMwIDI0WiIgZmlsbD0idXJsKCN0dmFnQmx1ZSkiLz4KICA8cGF0aCBkPSJNMjQgMTMwQzU4IDEzOCA4NCAxNjQgMTI2IDIzMkMxMTggMTY0IDkyIDEzOCAyNCAxMzBaIiBmaWxsPSJ1cmwoI3R2YWdCbHVlKSIvPgogIDxwYXRoIGQ9Ik0yMzIgMTMwQzE5OCAxMzggMTcyIDE2NCAxMzAgMjMyQzEzOCAxNjQgMTY0IDEzOCAyMzIgMTMwWiIgZmlsbD0idXJsKCN0dmFnQmx1ZSkiLz4KICA8Y2lyY2xlIGN4PSIxMjgiIGN5PSIxMjgiIHI9IjE4IiBmaWxsPSJ1cmwoI3R2YWdCbHVlKSIvPgo8L3N2Zz4K"><span><small>The VA Group</small>CSA Automation Challenges Check-in</span></h1>
+</header>
+<main>
+<section id="vForm">
+<div class="card"><h2>Help us make automation easier</h2>
+<p class="sub">About 5 to 7 minutes. This is not a test or a performance review. Your answers help the Tech Team find the right training, docs, and fixes.</p>
+<div class="note">Managers see team-level results. Individual written answers stay hidden unless a manager opens the detail view.</div></div>
+<div class="prog"><div><i id="pg"></i></div></div>
+<form id="f" novalidate>
+<div class="card"><h2>A. About you</h2>
+<div class="grid2"><div><label class="q req" for="name">CSA name</label><input type="text" id="name" autocomplete="name"></div>
+<div><label class="q req" for="date">Date submitted</label><input type="date" id="date"></div>
+<div><label class="q req" for="client">Client / project</label><input type="text" id="client"></div>
+<div><label class="q req" for="tenure">How long have you worked with MAVIS?</label><select id="tenure"><option value="">Select</option><option>Less than 1 month</option><option>1 to 3 months</option><option>3 to 6 months</option><option>6 to 12 months</option><option>Over 1 year</option></select></div></div></div>
+<div class="card"><h2>B. Your confidence</h2><p class="sub">1 = Not confident, 5 = Very confident. Answer honestly. Low scores are useful, not bad.</p>
+<div class="scale"><span>1 Not confident</span><span>5 Very confident</span></div><div id="rates"></div></div>
+<div class="card"><h2>C. Where do you struggle most?</h2><p class="sub">Select all that apply (at least one).</p><div class="chk" id="strug"></div>
+<div id="strugOtherW" class="hide"><label class="q req" for="strugOther">Other (tell us)</label><input type="text" id="strugOther"></div></div>
+<div class="card"><h2>D. A recent challenge</h2>
+<label class="q req" for="recent">Describe a recent automation task you struggled with</label><textarea id="recent"></textarea>
+<label class="q req" for="hardest">What part was most challenging?</label><textarea id="hardest"></textarea>
+<div class="grid2"><div><label class="q req" for="time">How long did you spend trying to resolve it?</label><select id="time"><option value="">Select</option><option>Under 30 minutes</option><option>30 to 60 minutes</option><option>1 to 2 hours</option><option>2 to 4 hours</option><option>More than 4 hours</option><option>Over multiple days</option></select></div>
+<div><label class="q req" for="indep">Did you complete it independently?</label><select id="indep"><option value="">Select</option><option>Yes</option><option>Partly (needed some help)</option><option>No</option></select></div></div>
+<div id="blkW" class="hide"><label class="q req" for="blocker">What mainly prevented you from finishing alone?</label><select id="blocker"></select>
+<label class="q req" for="blockerNote">Anything to add?</label><textarea id="blockerNote"></textarea></div></div>
+<div class="card"><h2>E. What would help most?</h2><p class="sub">Select all that apply (at least one).</p><div class="chk" id="supp"></div>
+<div id="suppOtherW" class="hide"><label class="q req" for="suppOther">Other (tell us)</label><input type="text" id="suppOther"></div></div>
+<div class="card"><h2>F. Anything else</h2><p class="sub">If nothing applies, write "None".</p>
+
+<label class="q req" for="frus">What takes the most time or causes the most frustration in MAVIS?</label><textarea id="frus"></textarea>
+<label class="q req" for="easier">What would make automation easier for you?</label><textarea id="easier"></textarea>
+<label class="q req" for="tech">Anything you want the Tech Team to improve or provide?</label><textarea id="tech"></textarea>
+<label class="q req" for="other">Other suggestions or concerns</label><textarea id="other"></textarea></div>
+<div id="ferr" class="err"></div>
+<button class="btn" id="sub" type="submit">Submit check-in</button>
+</form></section>
+<section id="vDone" class="hide"><div class="card done"><div class="ck">&#10003;</div><h2>Thank you, your check-in was submitted</h2><p class="sub">The Tech Team will use team-level trends to plan training, docs, and fixes. No grades, no scores for you.</p><button class="btn ghost" id="again">Submit another</button></div></section>
+
+<div class="foot">THE VA GROUP &middot; CSA Enablement</div></main>
+<script>
+// ---- CONFIG: paste the deployed Apps Script /exec URL here to store responses centrally ----
+const API_URL = 'https://script.google.com/macros/s/AKfycbzJM8Og_I-Ca9JMEymu6T1cLWAdSf9aLE-CZE2nC3jAYET4xXQXeahy0G85X6bK7Qjp/exec';
+// ----------------------------------------------------------------------------------------
+const SKILLS=[["req","Understanding automation requirements"],["prompt","Creating effective automation prompts"],["setup","Setting up automation workflows"],["connect","Connecting third-party apps and integrations"],["api","Configuring API connections and credentials"],["trig","Working with triggers and actions"],["map","Mapping data between applications"],["test","Testing and validating automation outputs"],["trbl","Troubleshooting failed automations"],["mod","Modifying or improving existing workflows"],["mon","Monitoring automation performance"]];
+const STRUGGLES=["Understanding client requirements","Translating client requests into automation workflows","Writing effective prompts","Choosing the right apps or integrations","Setting up integrations and authentication","API configuration and technical requirements","Data mapping and formatting","Workflow logic and conditional steps","Troubleshooting errors","Testing and quality assurance","Maintaining existing automations","Understanding MAVIS limitations","Other"];
+const SUPPORT=["Hands-on automation training","Prompt-writing exercises and examples","Integration setup tutorials","API and technical fundamentals","Troubleshooting guides","Step-by-step SOPs","Real-world automation demonstrations","One-on-one coaching with the Tech Team","More practice with actual client scenarios","Other"];
+const BLOCKERS=[["","Select"],["knowledge","I did not know how to do it (knowledge or skill gap)"],["docs","Instructions or docs were unclear or missing"],["system","MAVIS could not do it (system limitation)"],["integration","Integration or authentication problem"],["client","Waiting on the client (access, info, approval)"],["time","Not enough time"],["other","Other"]];
+const BLK_LABEL=Object.fromEntries(BLOCKERS.filter(b=>b[0]).map(b=>[b[0],b[1].replace(/ \(.*\)/,'')]));
+// Struggle -> suggested group training / fix
+const FIX={0:"Client requirements intake workshop",1:"Request-to-workflow translation practice",2:"Prompt-writing clinic with examples",3:"App selection guide (which integration for which job)",4:"Integration and authentication setup tutorial",5:"API and technical fundamentals in plain English",6:"Data mapping and formatting walkthrough",7:"Workflow logic and conditions demo",8:"Troubleshooting guide for common errors",9:"Testing and QA checklist",10:"Maintaining automations SOP",11:"MAVIS limits and workarounds cheat sheet"};
+const $=s=>document.querySelector(s), esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS='csa_auto_responses_v1', KEY='csa_auto_mgrkey';
+
+$('#date').value=new Date().toISOString().slice(0,10);
+// ---- build form ----
+$('#rates').innerHTML=SKILLS.map(([k,t])=>`<div class="rate"><div class="t">${t}</div><div class="pills" role="radiogroup" aria-label="${esc(t)}">${[1,2,3,4,5].map(n=>`<input type="radio" name="r_${k}" id="r_${k}${n}" value="${n}"><label for="r_${k}${n}">${n}</label>`).join('')}</div></div>`).join('');
+$('#strug').innerHTML=STRUGGLES.map((t,i)=>`<label><input type="checkbox" name="strug" value="${i}"> ${esc(t)}</label>`).join('');
+$('#supp').innerHTML=SUPPORT.map((t,i)=>`<label><input type="checkbox" name="supp" value="${i}"> ${esc(t)}</label>`).join('');
+$('#blocker').innerHTML=BLOCKERS.map(b=>`<option value="${b[0]}">${esc(b[1])}</option>`).join('');
+const last=a=>a[a.length-1];
+function progress(){const ids=['name','date','client','tenure','recent','hardest','time','indep','frus','easier','tech','other'];let n=0,t=ids.length+SKILLS.length+2;
+ ids.forEach(i=>{if($('#'+i).value.trim())n++});SKILLS.forEach(([k])=>{if($(`input[name=r_${k}]:checked`))n++});
+ if(document.querySelector('input[name=strug]:checked'))n++;if(document.querySelector('input[name=supp]:checked'))n++;$('#pg').style.width=Math.round(n/t*100)+'%'}
+$('#f').addEventListener('input',()=>{
+ $('#strugOtherW').classList.toggle('hide',!document.querySelector('input[name=strug][value="12"]:checked'));
+ $('#suppOtherW').classList.toggle('hide',!document.querySelector('input[name=supp][value="9"]:checked'));
+ $('#blkW').classList.toggle('hide',!($('#indep').value&&$('#indep').value!=='Yes'));progress()});
+const vals=n=>[...document.querySelectorAll(`input[name=${n}]:checked`)].map(e=>+e.value);
+$('#f').addEventListener('submit',async e=>{e.preventDefault();
+ const miss=[];if(!$('#name').value.trim())miss.push('your name');if(!$('#date').value)miss.push('the date');if(!$('#tenure').value)miss.push('how long you have used MAVIS');
+ const v=i=>$('#'+i).value.trim(),sel=(n,i)=>document.querySelector(`input[name=${n}][value="${i}"]:checked`);
+ if(!v('client'))miss.push('client or project');
+ if(!vals('strug').length)miss.push('at least one area you struggle with');
+ if(sel('strug',12)&&!v('strugOther'))miss.push('your "Other" struggle');
+ [['recent','your recent challenge'],['hardest','the most challenging part'],['time','time spent'],['indep','whether you finished independently']].forEach(([i,t])=>{if(!v(i))miss.push(t)});
+ if($('#indep').value&&$('#indep').value!=='Yes'){if(!v('blocker'))miss.push('what prevented you');if(!v('blockerNote'))miss.push('details on what prevented you')}
+ if(!vals('supp').length)miss.push('at least one support option');
+ if(sel('supp',9)&&!v('suppOther'))miss.push('your "Other" support need');
+ [['frus','your biggest frustration'],['easier','what would make automation easier'],['tech','what the Tech Team could improve'],['other','other suggestions or concerns']].forEach(([i,t])=>{if(!v(i))miss.push(t)});
+ const conf={};SKILLS.forEach(([k,t])=>{const c=document.querySelector(`input[name=r_${k}]:checked`);if(c)conf[k]=+c.value;else miss.push('a rating for "'+t+'"')});
+ if(miss.length){$('#ferr').textContent='Please complete: '+miss.slice(0,4).join(', ')+(miss.length>4?' and '+(miss.length-4)+' more':'')+'.';return}
+ $('#ferr').textContent='';
+ const r={id:'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts:new Date().toISOString(),name:$('#name').value.trim(),date:$('#date').value,client:$('#client').value.trim(),tenure:$('#tenure').value,conf,
+  struggles:vals('strug').map(i=>STRUGGLES[i]),struggleOther:$('#strugOther').value.trim(),recent:$('#recent').value.trim(),hardest:$('#hardest').value.trim(),time:$('#time').value,indep:$('#indep').value,blocker:$('#blocker').value,blockerNote:$('#blockerNote').value.trim(),
+  support:vals('supp').map(i=>SUPPORT[i]),supportOther:$('#suppOther').value.trim(),frus:$('#frus').value.trim(),easier:$('#easier').value.trim(),tech:$('#tech').value.trim(),other:$('#other').value.trim()};
+ const b=$('#sub');b.disabled=true;b.textContent='Submitting...';
+ try{await save(r);$('#vForm').classList.add('hide');$('#vDone').classList.remove('hide');scrollTo(0,0)}
+ catch(x){$('#ferr').textContent='Could not submit: '+x.message+'. Your answers are still on this page, please try again.'}
+ b.disabled=false;b.textContent='Submit check-in'});
+$('#again').onclick=()=>{$('#f').reset();$('#date').value=new Date().toISOString().slice(0,10);$('#vDone').classList.add('hide');$('#vForm').classList.remove('hide');progress()};
+const local=()=>{try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}};
+async function save(r){
+ if(!API_URL){const a=local();a.push(r);localStorage.setItem(LS,JSON.stringify(a));return}
+ const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'submit',data:r})});
+ const j=await res.json();if(!j.ok)throw new Error(j.error||'server error')}
+progress();
+</script></body></html>
