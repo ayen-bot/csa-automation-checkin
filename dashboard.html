@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>CSA Automation Check-in: Manager Dashboard</title>
+<style>
+:root{--bg:#f3f6fc;--card:#fff;--ink:#1c2433;--mut:#5d6b82;--line:#e2e7f0;--pri:#155EEF;--pri2:#0f49c2;--sky:#38BDF8;--ok:#1f9d6b;--warn:#d9822b;--bad:#c9444d;--soft:#eaf2ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:linear-gradient(120deg,#050816,#0a1833 55%,#08101f);border-bottom:3px solid var(--sky);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header h1{font-size:16px;margin:0;font-weight:600;display:flex;align-items:center;gap:10px}header h1 img{width:34px;height:34px}header h1 small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);font-weight:600}header nav button{background:transparent;color:#cfe3fb;border:1px solid #2a3b63;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14px;margin-left:6px}
+header nav button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+main{max-width:980px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h2{font-size:17px;font-weight:600;margin:0 0 4px}.card .sub{color:var(--mut);font-size:14px;margin:0 0 12px}
+label.q{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}.req:after{content:" *";color:var(--bad)}
+input[type=text],input[type=date],input[type=password],select,textarea{width:100%;padding:10px;border:1px solid #cdd5e3;border-radius:8px;font:inherit;background:#fff}
+textarea{min-height:76px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rate{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.rate:last-child{border:0}.rate .t{font-size:14px}
+.pills{display:flex;gap:4px}.pills input{position:absolute;opacity:0;pointer-events:none}
+.pills label{width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid #cdd5e3;border-radius:8px;cursor:pointer;font-weight:600;background:#fff}
+.pills input:checked+label{background:var(--pri);color:#fff;border-color:var(--pri)}
+.pills input:focus-visible+label{outline:2px solid var(--pri2);outline-offset:2px}
+.scale{display:flex;justify-content:space-between;color:var(--mut);font-size:12px;margin-bottom:4px}
+.chk{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk label{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px;font-size:14px;cursor:pointer}
+.chk label:has(input:checked){background:var(--soft);border-color:var(--pri)}
+.btn{background:var(--pri);color:#fff;border:0;border-radius:9px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--pri2)}.btn.ghost{background:#fff;color:var(--pri);border:1px solid var(--pri)}.btn:disabled{opacity:.6}
+.prog{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}.prog div{height:6px;background:var(--line);border-radius:4px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+.err{color:var(--bad);font-size:13px;margin-top:4px}.note{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:13px;color:#0f3a96}
+.hide{display:none!important}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:22px;line-height:1.2;margin-top:4px}.stat span{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;font-weight:600}.stat small{font-size:12px;color:var(--mut)}
+.filters{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.filters label{font-size:12px;color:var(--mut);display:block;margin-bottom:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bar{display:grid;grid-template-columns:minmax(120px,42%) 1fr 54px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.bar .tr{background:#edf0f6;border-radius:6px;height:14px;overflow:hidden}.bar .fl{height:100%;border-radius:6px}.foot{text-align:center;color:var(--mut);font-size:12px;padding:6px 0 24px;letter-spacing:.04em}.bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mut);font-weight:600}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;background:var(--soft);color:#0f3a96;margin:1px}.tag.w{background:#fdf0e1;color:#8a4d10}.tag.b{background:#fbe6e8;color:#8f2a32}.tag.g{background:#e1f5ec;color:#15694a}
+.rec h3{font-size:14px;margin:14px 0 4px}.rec ul{margin:0;padding-left:18px;font-size:14px}.rec li{margin:3px 0}
+.empty{color:var(--mut);font-size:14px;padding:8px 0}
+.done{text-align:center;padding:40px 18px}.done .ck{width:60px;height:60px;border-radius:50%;background:#e1f5ec;color:var(--ok);font-size:32px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+@media(max-width:760px){.cards,.filters{grid-template-columns:1fr 1fr}.two,.grid2,.chk{grid-template-columns:1fr}.bar{grid-template-columns:1fr 1fr 48px}.bar .l{grid-column:1/3}.bar .tr{grid-column:1/3;grid-row:2}.bar .v{grid-row:1;grid-column:3}}
+</style></head><body>
+<header><h1><img alt="The VA Group" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgdmlld0JveD0iMCAwIDI1NiAyNTYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9InR2YWdCbHVlIiB4MT0iNDQiIHkxPSIyOCIgeDI9IjIxNCIgeTI9IjIyNCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwQTFBNzIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIwLjQ1IiBzdG9wLWNvbG9yPSIjMjM1MkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzRDQzdGRiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIHJ4PSI1NiIgZmlsbD0iIzA2MTEyNiIvPgogIDxwYXRoIGQ9Ik0xMjYgMjRDMTE4IDU4IDkyIDg0IDI0IDEyNkM5MiAxMTggMTE4IDkyIDEyNiAyNFoiIGZpbGw9InVybCgjdHZhZ0JsdWUpIi8+CiAgPHBhdGggZD0iTTEzMCAyNEMxMzggNTggMTY0IDg0IDIzMiAxMjZDMTY0IDExOCAxMzggOTIgMTMwIDI0WiIgZmlsbD0idXJsKCN0dmFnQmx1ZSkiLz4KICA8cGF0aCBkPSJNMjQgMTMwQzU4IDEzOCA4NCAxNjQgMTI2IDIzMkMxMTggMTY0IDkyIDEzOCAyNCAxMzBaIiBmaWxsPSJ1cmwoI3R2YWdCbHVlKSIvPgogIDxwYXRoIGQ9Ik0yMzIgMTMwQzE5OCAxMzggMTcyIDE2NCAxMzAgMjMyQzEzOCAxNjQgMTY0IDEzOCAyMzIgMTMwWiIgZmlsbD0idXJsKCN0dmFnQmx1ZSkiLz4KICA8Y2lyY2xlIGN4PSIxMjgiIGN5PSIxMjgiIHI9IjE4IiBmaWxsPSJ1cmwoI3R2YWdCbHVlKSIvPgo8L3N2Zz4K"><span><small>The VA Group</small>CSA Automation Check-in</span></h1><span style="color:var(--sky);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600">Manager Dashboard</span>
+</header>
+<main>
+<section id="vDash"></section>
+<div class="foot">THE VA GROUP &middot; CSA Enablement</div></main>
+<script>
+// ---- CONFIG: paste the deployed Apps Script /exec URL here to store responses centrally ----
+const API_URL = 'https://script.google.com/macros/s/AKfycbzJM8Og_I-Ca9JMEymu6T1cLWAdSf9aLE-CZE2nC3jAYET4xXQXeahy0G85X6bK7Qjp/exec';
+// ----------------------------------------------------------------------------------------
+const SKILLS=[["req","Understanding automation requirements"],["prompt","Creating effective automation prompts"],["setup","Setting up automation workflows"],["connect","Connecting third-party apps and integrations"],["api","Configuring API connections and credentials"],["trig","Working with triggers and actions"],["map","Mapping data between applications"],["test","Testing and validating automation outputs"],["trbl","Troubleshooting failed automations"],["mod","Modifying or improving existing workflows"],["mon","Monitoring automation performance"]];
+const STRUGGLES=["Understanding client requirements","Translating client requests into automation workflows","Writing effective prompts","Choosing the right apps or integrations","Setting up integrations and authentication","API configuration and technical requirements","Data mapping and formatting","Workflow logic and conditional steps","Troubleshooting errors","Testing and quality assurance","Maintaining existing automations","Understanding MAVIS limitations","Other"];
+const SUPPORT=["Hands-on automation training","Prompt-writing exercises and examples","Integration setup tutorials","API and technical fundamentals","Troubleshooting guides","Step-by-step SOPs","Real-world automation demonstrations","One-on-one coaching with the Tech Team","More practice with actual client scenarios","Other"];
+const BLOCKERS=[["","Select"],["knowledge","I did not know how to do it (knowledge or skill gap)"],["docs","Instructions or docs were unclear or missing"],["system","MAVIS could not do it (system limitation)"],["integration","Integration or authentication problem"],["client","Waiting on the client (access, info, approval)"],["time","Not enough time"],["other","Other"]];
+const BLK_LABEL=Object.fromEntries(BLOCKERS.filter(b=>b[0]).map(b=>[b[0],b[1].replace(/ \(.*\)/,'')]));
+// Struggle -> suggested group training / fix
+const FIX={0:"Client requirements intake workshop",1:"Request-to-workflow translation practice",2:"Prompt-writing clinic with examples",3:"App selection guide (which integration for which job)",4:"Integration and authentication setup tutorial",5:"API and technical fundamentals in plain English",6:"Data mapping and formatting walkthrough",7:"Workflow logic and conditions demo",8:"Troubleshooting guide for common errors",9:"Testing and QA checklist",10:"Maintaining automations SOP",11:"MAVIS limits and workarounds cheat sheet"};
+const $=s=>document.querySelector(s), esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS='csa_auto_responses_v1', KEY='csa_auto_mgrkey';
+
+const local=()=>{try{return JSON.parse(localStorage.getItem(LS)||'[]')}catch(e){return[]}};
+async function remove(id){
+ if(!API_URL){localStorage.setItem(LS,JSON.stringify(local().filter(r=>r.id!==id)));return}
+ const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'delete',id,key:sessionStorage.getItem(KEY)||''})});
+ const j=await res.json();if(!j.ok)throw new Error(j.error||'server error')}
+async function load(key){
+ if(!API_URL)return local();
+ const res=await fetch(API_URL+'?action=results&key='+encodeURIComponent(key));const j=await res.json();
+ if(!j.ok)throw new Error(j.error||'access denied');return j.rows}
+// ---- dashboard ----
+let ALL=[],SHOWTXT=false;
+async function openDash(){
+ const d=$('#vDash');
+ let key=sessionStorage.getItem(KEY)||'';
+ if(API_URL&&!key){d.innerHTML=`<div class="card"><h2>Manager access</h2><p class="sub">Enter the manager key to view team results.</p><input type="password" id="mk" placeholder="Manager key"><div id="mke" class="err"></div><p><button class="btn" id="mkb">Open dashboard</button></p></div>`;
+  $('#mkb').onclick=()=>{sessionStorage.setItem(KEY,$('#mk').value);openDash()};return}
+ d.innerHTML='<div class="card empty">Loading results...</div>';
+ try{ALL=await load(key)}catch(e){sessionStorage.removeItem(KEY);d.innerHTML=`<div class="card"><h2>Could not load results</h2><p class="err">${esc(e.message)}</p><button class="btn" id="rt">Try again</button></div>`;$('#rt').onclick=openDash;return}
+ draw()}
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
+const rAvg=r=>avg(SKILLS.map(([k])=>r.conf[k]).filter(Boolean));
+const count=(rs,f)=>{const m={};rs.forEach(r=>f(r).forEach(x=>m[x]=(m[x]||0)+1));return Object.entries(m).sort((a,b)=>b[1]-a[1])};
+const level=v=>v<3?'low':v<4?'mid':'high';
+const col=v=>v<3?'#c9444d':v<4?'#d9822b':'#1f9d6b';
+function latestPerCSA(rs){const m={};rs.sort((a,b)=>a.ts<b.ts?-1:1).forEach(r=>m[r.name.toLowerCase()]=r);return Object.values(m)}
+function draw(){
+ const names=[...new Set(ALL.map(r=>r.name))].sort();
+ const keep=['fN','fFrom','fTo','fC','fL'].map(i=>$('#'+i)?$('#'+i).value:'');
+ $('#vDash').innerHTML=`<div class="card"><h2>Filters</h2><div class="filters">
+ <div><label>CSA name</label><select id="fN"><option value="">All</option>${names.map(n=>`<option>${esc(n)}</option>`).join('')}</select></div>
+ <div><label>Submitted from</label><input type="date" id="fFrom"></div><div><label>Submitted to</label><input type="date" id="fTo"></div>
+ <div><label>Challenge category</label><select id="fC"><option value="">All</option>${STRUGGLES.map(s=>`<option>${esc(s)}</option>`).join('')}</select></div>
+ <div><label>Confidence level</label><select id="fL"><option value="">All</option><option value="low">Low (under 3)</option><option value="mid">Medium (3 to 3.9)</option><option value="high">High (4+)</option></select></div></div>
+ <p style="margin:10px 0 0"><button class="btn ghost" id="fR">Reset</button> ${API_URL?'':'<button class="btn ghost" id="smp">Load sample data</button> <button class="btn ghost" id="clr">Clear local data</button>'} <button class="btn ghost" id="rf">Refresh</button></p>
+ ${API_URL?'':'<p class="note" style="margin-top:10px">Demo mode: no database connected yet, so results come from this browser only. Set API_URL to store responses centrally.</p>'}</div><div id="out"></div>`;
+ ['fN','fFrom','fTo','fC','fL'].forEach((id,i)=>{$('#'+id).value=keep[i]||'';$('#'+id).onchange=render});
+ $('#fR').onclick=()=>{['fN','fFrom','fTo','fC','fL'].forEach(i=>$('#'+i).value='');render()};
+ $('#rf').onclick=openDash;
+ if(!API_URL){$('#smp').onclick=()=>{localStorage.setItem(LS,JSON.stringify(local().concat(sample())));openDash()};$('#clr').onclick=()=>{if(confirm('Delete all locally stored responses?')){localStorage.removeItem(LS);openDash()}}}
+ render()}
+function filtered(){
+ const n=$('#fN').value,f=$('#fFrom').value,t=$('#fTo').value,c=$('#fC').value,l=$('#fL').value;
+ return ALL.filter(r=>(!n||r.name===n)&&(!f||r.date>=f)&&(!t||r.date<=t)&&(!c||r.struggles.includes(c))&&(!l||level(rAvg(r))===l))}
+function bars(items,max,fmt,colorFn){if(!items.length)return'<div class="empty">No data for these filters.</div>';
+ return items.map(([l,v])=>`<div class="bar"><div class="l">${esc(l)}</div><div class="tr"><div class="fl" style="width:${Math.max(2,v/max*100)}%;background:${colorFn?colorFn(v):'#155EEF'}"></div></div><div class="v">${fmt(v)}</div></div>`).join('')}
+const THEMES=[["Authentication / credentials",/auth|oauth|credential|login|token|permission|access/i],["API setup",/\bapi\b|endpoint|webhook/i],["Prompt wording",/prompt|wording|phrase/i],["Triggers and actions",/trigger|action|schedule/i],["Data mapping",/mapping|map |field|format/i],["Errors and failures",/error|fail|broke|not working|timeout/i],["Unclear docs or steps",/unclear|confus|no doc|sop|instruction|guide/i],["Slow or time-consuming",/slow|long time|hours|takes too/i]];
+function render(){
+ const rs=filtered(),o=$('#out');
+ if(!rs.length){o.innerHTML='<div class="card empty">No responses match. '+(ALL.length?'Try resetting filters.':'Nothing submitted yet.')+'</div>';return}
+ const per=latestPerCSA(rs.slice()),n=per.length;
+ const skillAvg=SKILLS.map(([k,t])=>[t,avg(rs.map(r=>r.conf[k]).filter(Boolean))]);
+ const overall=avg(skillAvg.map(s=>s[1]));
+ const str=count(rs,r=>r.struggles),sup=count(rs,r=>r.support);
+ const csaRows=per.map(r=>{const low=SKILLS.filter(([k])=>r.conf[k]<=2).map(([k,t])=>t);return{r,a:rAvg(r),low}});
+ const needs=csaRows.filter(x=>x.a<3||x.low.length>=3);
+ const blk=count(rs,r=>r.blocker?[r.blocker]:[]);
+ const txt=rs.map(r=>[r.recent,r.hardest,r.blockerNote,r.frus,r.easier,r.tech,r.other].join(' '));
+ const th=THEMES.map(([l,re])=>[l,txt.filter(t=>re.test(t)).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
+ const bc=k=>(blk.find(b=>b[0]===k)||[0,0])[1];
+ const sorted=skillAvg.slice().sort((a,b)=>a[1]-b[1]);
+ const grp=str.filter(([t,c])=>c/rs.length>=0.25&&t!=='Other').map(([t,c])=>{const i=STRUGGLES.indexOf(t);return`${esc(FIX[i]||t)} <span class="tag">${c} of ${rs.length} responses</span>`});
+ const sopSup=sup.filter(([t])=>/SOP|guide|tutorial|exercise/i.test(t)).slice(0,3);
+ o.innerHTML=`
+ <div class="cards">
+ <div class="stat"><span>Total CSAs assessed</span><b>${n}</b><small>${rs.length} responses</small></div>
+ <div class="stat"><span>Avg automation confidence</span><b style="color:${col(overall)}">${overall.toFixed(1)} / 5</b><small>team average</small></div>
+ <div class="stat"><span>Most challenging area</span><b style="font-size:15px">${str[0]?esc(str[0][0]):'n/a'}</b><small>${str[0]?str[0][1]+' selections':''}</small></div>
+ <div class="stat"><span>CSAs who may need support</span><b>${needs.length}</b><small>avg under 3 or 3+ low skills</small></div>
+ <div class="stat"><span>Top training request</span><b style="font-size:15px">${sup[0]?esc(sup[0][0]):'n/a'}</b><small>${sup[0]?sup[0][1]+' requests':''}</small></div></div>
+ <div class="two"><div class="card"><h2>Confidence by skill</h2><p class="sub">Team average, 1 to 5. Lowest first.</p>${bars(sorted,5,v=>v.toFixed(1),col)}</div>
+ <div class="card"><h2>Most reported challenges</h2><p class="sub">Number of responses selecting each.</p>${bars(str,Math.max(1,str[0]?str[0][1]:1),v=>v)}</div></div>
+ <div class="two"><div class="card"><h2>Training and support requests</h2><p class="sub">Number of responses selecting each.</p>${bars(sup,Math.max(1,sup[0]?sup[0][1]:1),v=>v)}</div>
+ <div class="card"><h2>Common blockers and recurring issues</h2><p class="sub">Root cause when a task was not finished alone.</p>${bars(blk.map(([k,v])=>[BLK_LABEL[k]||k,v]),Math.max(1,blk[0]?blk[0][1]:1),v=>v)}
+ <h3 style="font-size:14px;margin:14px 0 0">Recurring themes in written answers</h3>${bars(th,Math.max(1,th[0]?th[0][1]:1),v=>v)}</div></div>
+ <div class="card"><h2>CSA skills and confidence</h2><p class="sub">Latest response per CSA. Shown to help plan support, not to rank people.</p>
+ <div style="overflow-x:auto"><table><tr><th>CSA</th><th>Avg</th><th>Lowest skills</th><th>Top struggles</th><th>Finished independently</th></tr>
+ ${csaRows.sort((a,b)=>a.a-b.a).map(({r,a})=>{const lows=SKILLS.slice().sort((x,y)=>r.conf[x[0]]-r.conf[y[0]]).slice(0,2).map(s=>s[1]);return`<tr><td>${esc(r.name)}</td><td><span class="tag ${a<3?'b':a<4?'w':'g'}">${a.toFixed(1)}</span></td><td>${lows.map(l=>`<span class="tag">${esc(l)}</span>`).join('')}</td><td>${r.struggles.slice(0,3).map(s=>`<span class="tag">${esc(s)}</span>`).join('')||'n/a'}</td><td>${esc(r.indep||'n/a')}</td></tr>`}).join('')}</table></div></div>
+ <div class="card rec"><h2>Recommended actions</h2><p class="sub">Generated from the filtered responses. Use as a starting point.</p>
+ <h3>Group training to prioritize</h3><ul>${grp.length?grp.map(g=>`<li>${g}</li>`).join(''):'<li>No topic was chosen by 25% or more of responses.</li>'}</ul>
+ <h3>Team skills to develop (lowest confidence)</h3><ul>${sorted.slice(0,3).map(s=>`<li>${esc(s[0])} <span class="tag ${s[1]<3?'b':'w'}">${s[1].toFixed(1)}</span></li>`).join('')}</ul>
+ <h3>CSAs who may benefit from one-on-one coaching</h3><ul>${needs.length?needs.map(x=>`<li>${esc(x.r.name)} <span class="tag">avg ${x.a.toFixed(1)}</span> ${x.low.slice(0,3).map(l=>`<span class="tag b">${esc(l)}</span>`).join('')}</li>`).join(''):'<li>No one currently flagged.</li>'}</ul>
+ <h3>Better SOPs or documentation needed</h3><ul><li>${bc('docs')} blocker report(s) cite unclear or missing instructions</li>${sopSup.map(([t,c])=>`<li>${c} request(s) for: ${esc(t)}</li>`).join('')}${th.some(x=>x[0]==='Unclear docs or steps')?'<li>Written answers mention unclear docs or steps</li>':''}</ul>
+ <h3>MAVIS limits vs. knowledge gaps</h3><ul><li><b>Knowledge or skill gap:</b> ${bc('knowledge')} blocker(s) fix with training</li><li><b>System limitation:</b> ${bc('system')} blocker(s) plus ${(str.find(s=>s[0]==='Understanding MAVIS limitations')||[0,0])[1]} "understanding MAVIS limitations" selections, so route to the Tech Team</li><li><b>Integration or auth:</b> ${bc('integration')} blocker(s), check setup guides and connection health</li><li><b>Client dependency:</b> ${bc('client')} blocker(s), not a CSA skill issue</li></ul></div>
+ <div class="card"><h2>Written responses</h2><p class="sub">Hidden by default to protect individual answers. Open only when needed.</p>
+ <button class="btn ghost" id="tg">${SHOWTXT?'Hide':'Show'} written responses</button><div id="tx"></div></div>
+ <div class="card"><h2>Manage entries</h2><p class="sub">Remove test or duplicate entries. Deleting is permanent.</p>
+ <div style="overflow-x:auto"><table><tr><th>CSA</th><th>Date</th><th>Avg</th><th></th></tr>${rs.slice().sort((a,b)=>a.ts<b.ts?1:-1).map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.date)}</td><td>${rAvg(r).toFixed(1)}</td><td><button class="btn ghost" style="padding:5px 12px;font-size:13px;color:var(--bad);border-color:var(--bad)" data-del="${esc(r.id)}">Delete</button></td></tr>`).join('')}</table></div></div>`;
+ document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{const id=b.dataset.del,r=ALL.find(x=>x.id===id);
+  if(!confirm('Delete the entry from '+(r?r.name:'this CSA')+'? This cannot be undone.'))return;
+  b.disabled=true;b.textContent='Deleting...';
+  try{await remove(id);ALL=ALL.filter(x=>x.id!==id);draw()}catch(e){alert('Could not delete: '+e.message);b.disabled=false;b.textContent='Delete'}});
+ $('#tg').onclick=()=>{SHOWTXT=!SHOWTXT;render()};
+ if(SHOWTXT)$('#tx').innerHTML=rs.map(r=>{const f=[["Recent struggle",r.recent],["Hardest part",r.hardest],["Blocker note",r.blockerNote],["Frustration",r.frus],["Would make it easier",r.easier],["Tech Team ask",r.tech],["Other",r.other]].filter(x=>x[1]);
+  return f.length?`<div style="border-top:1px solid var(--line);margin-top:12px;padding-top:8px"><b>${esc(r.name)}</b> <span class="tag">${esc(r.date)}</span>${f.map(([a,b])=>`<div style="font-size:14px;margin-top:4px"><span style="color:var(--mut)">${a}:</span> ${esc(b)}</div>`).join('')}</div>`:''}).join('')||'<div class="empty">No written answers.</div>'}
+function sample(){const nm=['Alex','Bri','Cam','Dee','Eli','Fay','Gus','Hal','Ivy','Jo'].map(x=>x+' (sample)');let s=7;const rnd=()=>(s=(s*9301+49297)%233280)/233280;
+ return nm.map((name,i)=>{const base=1.5+rnd()*3,conf={};SKILLS.forEach(([k])=>conf[k]=Math.max(1,Math.min(5,Math.round(base+(rnd()-.5)*2))));
+  const pick=(a,n)=>a.filter(()=>rnd()<n/a.length);const d=new Date(Date.now()-i*86400000*3).toISOString().slice(0,10);
+  const ind=base<2.6?'No':base<3.6?'Partly (needed some help)':'Yes';
+  return{id:'s'+i+Date.now(),ts:d+'T12:00:00Z',name,date:d,client:'',tenure:'1 to 3 months',conf,struggles:pick(STRUGGLES.slice(0,12),3),struggleOther:'',recent:'OAuth login kept failing on a client integration',hardest:'Unclear steps for credentials',time:'1 to 2 hours',indep:ind,blocker:ind==='Yes'?'':['knowledge','docs','system','integration','client'][i%5],blockerNote:'',support:pick(SUPPORT.slice(0,9),3),supportOther:'',frus:'Errors take a long time to track down',easier:'A step-by-step guide',tech:'',other:''}})}
+
+openDash();
+</script></body></html>
